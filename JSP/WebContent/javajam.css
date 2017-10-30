@@ -1,0 +1,112 @@
+/*Modifies body tag*/
+body{
+   background-color: #FCEBB6; color: #221811;
+   background-image:url(/JSP/images/circuit6.jpg);
+   background-size: cover;
+   font-family: Verdana, Arial, sans-serif;
+   background-repeat: no-repeat;
+   }
+
+/*Modifies header tag*/      
+header{
+   background-color: #c3bfb5;
+   height: 150px;
+   background-repeat: no-repeat;
+   color: #000000;
+   }
+
+/*Modifies heading 1 tag*/   
+h1{
+   padding-top: 45px ;
+   padding-left: 220px;
+   font-size: 3em;
+   }
+
+/*Modifies navigation tag*/
+nav{
+   text-align: center;
+   font-weight: bold;
+   font-size: 1.5em;
+   padding-top: 10px;
+   text-decoration: none;
+    }
+
+   /*Removes hyperlink underline*/   
+a:link {
+color: #c3bfb5;
+text-decoration: none;
+}
+a:visited {
+color: #c3bfb5;
+}
+a:hover {
+color: #ffffff;
+}
+
+/*Modifies footer tag*/   
+footer
+   {
+   background-color: #c3bfb5;
+   font-size: .60em;
+   text-align: center;
+   font-style: italic;
+   padding-bottom: 10px;
+   border-top-width: 2px;
+   border-top-style: solid;
+   border-top-color: #221811;
+   color: #000000;
+   
+   }
+
+/*Modifies wrapper id element*/    
+#wrapper {
+   margin-left: auto;
+   margin-right: auto;
+   width: 80%;
+   background-color: #450000; min-width: 900px; max-width: 1280px;
+   box-shadow: 2px 2px 5px #000000;
+   color: #ffffff;
+      }
+
+/*Modifies heading 4 element*/
+h4{
+   background-color: #D2B48C;
+   font-size: 1.2em;
+   padding-left: 10px;
+   padding-bottom: 5px;
+  }
+
+/*Modifies main element tag*/
+main{
+   padding-left: 2em;
+   padding-right: 2em;
+   padding-bottom: 2em;
+   display: block;
+   }  
+form {
+
+}	
+
+/*Modifies the details class*/   
+.details{
+   padding-left: 20%;
+   padding-right: 20%;
+   }
+
+/*Modifies image tag*/
+img{
+   padding-left: 0px;
+   padding-right: 10px;
+   }
+
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
