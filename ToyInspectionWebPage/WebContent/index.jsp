@@ -4,16 +4,21 @@
     pageEncoding="ISO-8859-1"%>
     
 <% 
-//set boolean false
-	boolean save = false;
+//SAVE TOY
+	//check if save button was pressed
+	//set boolean was save true
+	//put all values into object
+	//save object
 	if (request.getParameter("btnSave") != null) {
 		Toy myToy = new Toy();
 		myToy.getCircuit1().setVoltage(Double.parseDouble(request.getParameter("volt1")));
 		myToy.getCircuit1().setResistance(Double.parseDouble(request.getParameter("resis1")));
+		myToy.getCircuit1().calculateAmperage();
 		myToy.getCircuit1().setManufactureLocation(request.getParameter("location1"));
 		
 		myToy.getCircuit2().setVoltage(Double.parseDouble(request.getParameter("volt2")));
 		myToy.getCircuit2().setResistance(Double.parseDouble(request.getParameter("resis2")));
+		myToy.getCircuit2().calculateAmperage();
 		myToy.getCircuit2().setManufactureLocation(request.getParameter("location2"));
 		
 		myToy.setInspector(request.getParameter("inspectorName"));
@@ -25,12 +30,12 @@
 		myToy.save();
 		
 	}
-//check if save button was pressed
-	//set boolean was save true
-	//put all values into object
-	//save object
-
-
+//DELETE TOY
+	if (request.getParameter("btnDelete") != null) {
+		Toy myToy = new Toy();
+		myToy.delete();
+	}
+ 
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -89,7 +94,7 @@
 				
 			</form>
 			</div>
-		</div>
+		</div> <!-- LOAD TOY -->
 		<% //if load button (btnload !=null) was pressed
 		
 		if (request.getParameter("btnLoad") != null) {
@@ -103,10 +108,13 @@
 		//load the stuff into object (from load id)
 		//add seperate message if toy does not exist%>
 		
-		<input required type="text" name ="loadID" class="form-control" id="loadID" value="<%out.print("starting value"); %>">
 		<div class="row">
 			<div class="panel panel-default">
-	 		 	<div class="panel-heading">Toy ID:<%out.print(myToy.getToyID()); %> Inspector Name:<%out.print(myToy.getInspector()); %></div>
+	 		 	<div class="panel-heading">
+	 		 		<b>Toy ID:</b><%out.print(myToy.getToyID());%> 
+	 		 		<b>Inspector Name:</b><%out.print(myToy.getInspector());%> 
+	 		 		<b>Inspection Time:</b> <%out.print(myToy.getInspectionDateTime());%> 
+	 		 	</div>
 	  			<div class="panel-body">
 	  				<div class="col-sm-6">
 	  					<h5>Circuit 1:</h5>
@@ -133,14 +141,14 @@
 					    <div class="modal-content">
 					      <div class="modal-header">
 					        <button type="button" class="close" data-dismiss="modal">&times;</button>
-					        <h4 class="modal-title">Are you sure you want to delete this toy?</h4>
+					        <h4 class="modal-title">Are you sure you want to delete Toy ID:<%out.print(myToy.getToyID()); %>?</h4>
 					      </div>
 					      <div class="modal-body">
 					       <div class="form-group">
-							 	 <input type="hidden" id="deleteID" value="<%out.print("id here"); %>">
-							    	<button type="submit" class="btn btn-danger btn-lg">delete</button>
+							 	 <input type="hidden" id="deleteID" value="<%out.print(myToy.getToyID()); %>">
+							    	<button type="submit" name="btnDelete" id="btnDelete" class="btn btn-danger btn-lg">Delete</button>
 							  
-					        <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+					        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">Cancel</button>
 					        </div>
 					      </div>
 					    </div>
@@ -154,6 +162,8 @@
 		</div>
 		<% } %>
         <!-- Trigger the modal with a button -->
+        <!-- SAVE TOY -->
+        
         <div class="row">
 			<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#createToy">Add Toy</button>
 		</div>
@@ -196,7 +206,7 @@
 				  		<input required type="number" class="form-control" name="volt2" id="volt2" step="0.01" min="0.01" placeholder="Voltage">
 				  		<input type="number" class="form-control" name="resis2" id="resis2" step="0.01" min="0.01" placeholder="Resistance">
 				  		<label class="control-label">Location</label>
-				  			<select class="form-control" id="location2">
+				  			<select class="form-control" name="location2" id="location2">
 				  			<option value="United States">United States</option>
 				  			<option value="Germany">Germany</option>
 				  			<option value="China">China</option>
