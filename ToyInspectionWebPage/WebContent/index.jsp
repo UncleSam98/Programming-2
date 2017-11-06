@@ -1,5 +1,6 @@
 <%@page import="bp.Toy"%>
 <%@page import="java.util.Date"%>
+<%@page import="java.security.InvalidParameterException"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     
@@ -9,6 +10,7 @@
 	//set boolean was save true
 	//put all values into object
 	//save object
+	boolean saveSuccessful = false;
 	if (request.getParameter("btnSave") != null) {
 		Toy myToy = new Toy();
 		myToy.getCircuit1().setVoltage(Double.parseDouble(request.getParameter("volt1")));
@@ -29,11 +31,16 @@
 		
 		myToy.save();
 		
+		saveSuccessful = true;
+		
 	}
 //DELETE TOY
+	boolean wasDeleted = false;
 	if (request.getParameter("btnDelete") != null) {
 		Toy myToy = new Toy();
+		myToy.setToyID(Integer.parseInt(request.getParameter("deleteID")));
 		myToy.delete();
+		wasDeleted = true;
 	}
  
 %>
@@ -47,45 +54,45 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <style>
-  body {
-  padding-top: 50px;
-  }
-  .starter-template {
-  padding: 40px 15px;
-  text-align: center;
-  }
+  body, html {
+    height: 100%;
+	}
+	.bg { 
+    /* The image used */
+    background-image:url(https://wallpaperscraft.com/image/toys_multicolored_collection_variety_31608_1920x1080.jpg);
+
+    /* Full height */
+    height: 100%; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+	}
+  	body {
+  	padding-top: 50px;
+  	}
+  	.starter-template {
+  	padding: 40px 15px;
+  	text-align: center;
+  	}
+  	.white-blur{
+  		text-shadow: 0px 0px 26px rgba(255, 255, 255, 1);
+  	}
   
   </style>
 </head>
 
-  <body>
+  <body class="bg">
+  
+  
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Project name</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
 
-      <div class="starter-template">
-        <h1>Toy Inspection</h1>
-        <div class="row">
-        <div class="col-md-2 col-offset-md-5">
-        	<form method="post">
+      <div class="starter-template container">
+        <h1 class="white-blur">Toy Inspection</h1>
+        <div class="row" style="margin-bottom: 2em; margin-top: 2em;">
+        <div class="col-2 col-offset-5">
+        	<form method="post" class="form-inline">
         		
 				  <div class="form-group">
 				 	 <input required type="number" name ="loadID" class="form-control" id="loadID" placeholder="Toy ID">
@@ -98,12 +105,13 @@
 		<% //if load button (btnload !=null) was pressed
 		
 		if (request.getParameter("btnLoad") != null) {
-			Toy myToy = new Toy();
-			
-			
-			String loadID = null;
-			loadID = request.getParameter("loadID");
-			myToy.load(Integer.parseInt(loadID));
+			try {
+				Toy myToy = new Toy();
+				
+				
+				String loadID = null;
+				loadID = request.getParameter("loadID");
+				myToy.load(Integer.parseInt(loadID));
 			
 		//load the stuff into object (from load id)
 		//add seperate message if toy does not exist%>
@@ -138,18 +146,21 @@
 					  <div class="modal-dialog">
 					
 					    <!-- Modal content-->
+					    <!-- DELETE TOY-->
 					    <div class="modal-content">
 					      <div class="modal-header">
 					        <button type="button" class="close" data-dismiss="modal">&times;</button>
 					        <h4 class="modal-title">Are you sure you want to delete Toy ID:<%out.print(myToy.getToyID()); %>?</h4>
 					      </div>
 					      <div class="modal-body">
+					      <form method="post">
 					       <div class="form-group">
-							 	 <input type="hidden" id="deleteID" value="<%out.print(myToy.getToyID()); %>">
+							 	 <input type="hidden" name="deleteID" id="deleteID" value="<%out.print(myToy.getToyID()); %>">
 							    	<button type="submit" name="btnDelete" id="btnDelete" class="btn btn-danger btn-lg">Delete</button>
 							  
 					        <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">Cancel</button>
 					        </div>
+					        </form>
 					      </div>
 					    </div>
 					
@@ -160,12 +171,41 @@
 			
 			
 		</div>
-		<% } %>
+		<% 
+			} catch (InvalidParameterException e) {
+				%>
+				<div class="alert alert-danger">
+  					 Toy ID <%out.print(request.getParameter("loadID")); %> not found!
+				</div>
+				
+				<% 
+			}
+		}
+		
+		if (saveSuccessful) {
+			%>
+			<div class="alert alert-success">
+					 Toy ID <%out.print(request.getParameter("toyID")); %> saved!
+			</div>
+			
+			<% 
+		}
+		
+		if (wasDeleted) {
+			%>
+			<div class="alert alert-info">
+					 Toy ID <%out.print(request.getParameter("deleteID")); %> was deleted!
+			</div>
+			
+			<% 
+		}
+		
+		%>
         <!-- Trigger the modal with a button -->
         <!-- SAVE TOY -->
         
         <div class="row">
-			<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#createToy">Add Toy</button>
+			<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#createToy" style="margin-top: 15px" >Add Toy</button>
 		</div>
 		
 		<!-- Modal -->
@@ -182,18 +222,18 @@
 		       <form method="post">
 				  <div class="form-group">
 				    <label for="inspector">Inspector Name:</label>
-				    <input type="text" class="form-control" name="inspectorName" id="inspector" placeholder="Inspector Name">
+				    <input required type="text" class="form-control" name="inspectorName" id="inspector" placeholder="Inspector Name">
 				  </div>
 				  <div class="form-group">
 				   <label for="ToyID">Toy ID:</label>
-				    <input type="number" class="form-control" name="toyID" id="ToyID" placeholder="Toy ID">
+				    <input required type="number" class="form-control" name="toyID" id="ToyID" placeholder="Toy ID">
 				  </div>
 				  	<div class="form-group">
 				  	
 				  	<div class="col-sm-6">
 				  		<label class="control-label">Circuit 1:</label>
-				  		<input type="number" class="form-control" name="volt1" id="volt1" step="0.01" min="0.01" placeholder="Voltage">
-				  		<input type="number" class="form-control" name="resis1" id="resis1" step="0.01" min="0.01" placeholder="Resistance">
+				  		<input required type="number" class="form-control" name="volt1" id="volt1" step="0.01" min="0.01" placeholder="Voltage">
+				  		<input required type="number" class="form-control" name="resis1" id="resis1" step="0.01" min="0.01" placeholder="Resistance">
 				  		<label class="control-label">Location</label>
 				  			<select class="form-control" name="location1" id="location1">
 				  			<option value="United States">United States</option>
@@ -203,8 +243,8 @@
 				  	</div>
 				  		  	<div class="col-sm-6">
 				  		<label class="control-label">Circuit 2:</label>
-				  		<input required type="number" class="form-control" name="volt2" id="volt2" step="0.01" min="0.01" placeholder="Voltage">
-				  		<input type="number" class="form-control" name="resis2" id="resis2" step="0.01" min="0.01" placeholder="Resistance">
+				  		<input required required type="number" class="form-control" name="volt2" id="volt2" step="0.01" min="0.01" placeholder="Voltage">
+				  		<input required type="number" class="form-control" name="resis2" id="resis2" step="0.01" min="0.01" placeholder="Resistance">
 				  		<label class="control-label">Location</label>
 				  			<select class="form-control" name="location2" id="location2">
 				  			<option value="United States">United States</option>
