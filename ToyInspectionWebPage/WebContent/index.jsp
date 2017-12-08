@@ -79,7 +79,7 @@
   	.white-blur{
   		text-shadow: 0px 0px 26px rgba(255, 255, 255, 1);
   	}
-  
+  	
   </style>
 </head>
 
@@ -119,8 +119,10 @@
 		<div class="row">
 			<div class="panel panel-default">
 	 		 	<div class="panel-heading">
-	 		 		<b>Toy ID:</b><%out.print(myToy.getToyID());%> 
-	 		 		<b>Inspector Name:</b><%out.print(myToy.getInspector());%> 
+	 		 		<b>Toy ID:</b> <%out.print(myToy.getToyID());%> 
+	 		 		<br>
+	 		 		<b>Inspector Name:</b> <%out.print(myToy.getInspector());%> 
+	 		 		<br>
 	 		 		<b>Inspection Time:</b> <%out.print(myToy.getInspectionDateTime());%> 
 	 		 	</div>
 	  			<div class="panel-body">
@@ -233,8 +235,8 @@
 				  	<div class="col-sm-6">
 				  		<label class="control-label">Circuit 1:</label>
 				  		<input required type="number" class="form-control" name="volt1" id="volt1" step="0.01" min="0.01" placeholder="Voltage">
-				  		<input required type="number" class="form-control" name="resis1" id="resis1" step="0.01" min="0.01" placeholder="Resistance">
-				  		<label class="control-label">Location</label>
+				  		<input required type="number" class="form-control" name="resis1" id="resis1" step="0.01" min="0.01" placeholder="Resistance" style="margin-top: 6px">
+				  		<label class="control-label"style="padding-top: 5px">Location</label>
 				  			<select class="form-control" name="location1" id="location1">
 				  			<option value="United States">United States</option>
 				  			<option value="Germany">Germany</option>
@@ -244,8 +246,8 @@
 				  		  	<div class="col-sm-6">
 				  		<label class="control-label">Circuit 2:</label>
 				  		<input required required type="number" class="form-control" name="volt2" id="volt2" step="0.01" min="0.01" placeholder="Voltage">
-				  		<input required type="number" class="form-control" name="resis2" id="resis2" step="0.01" min="0.01" placeholder="Resistance">
-				  		<label class="control-label">Location</label>
+				  		<input required type="number" class="form-control" name="resis2" id="resis2" step="0.01" min="0.01" placeholder="Resistance" style="margin-top: 6px">
+				  		<label class="control-label"style="padding-top: 5px">Location</label>
 				  			<select class="form-control" name="location2" id="location2">
 				  			<option value="United States">United States</option>
 				  			<option value="Germany">Germany</option>
